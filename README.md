@@ -150,3 +150,12 @@ TEST(VectorTests, testEmpty) {
 | Capacity changes (Vector)      | 14          | 17         | 20        | 24         | 27          | -          |
 | Time (std::vector)             | 0.000247481 | 0.00236621 | 0.0239906 | 0.247632   | 2.43998     | 2.95956    |
 | Capacity changes (std::vector) | 14          | 17         | 20        | 24         | 27          | -          |
+
+### Spartos analizė (opu-2)
+
+Studentų skaičius: 100000
+
+|  Container  | Total Time |
+|:-----------:|:----------:|
+| std::vector | 0.203783   |
+| Vector      | 0.196796   |
