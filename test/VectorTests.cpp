@@ -33,6 +33,25 @@ TEST(VectorTests, testSize) {
   EXPECT_EQ(stdVector.size(), myVector.size());
 }
 
+TEST(VectorTests, testCapacity) {
+  unsigned int sz = 10;
+  Vector<int> myVector;
+
+  EXPECT_EQ(0, myVector.capacity());
+
+  // fill with values
+  for (int i = 0; i <= sz; ++i) {
+    myVector.push_back(i);
+  }
+
+  EXPECT_EQ(16, myVector.capacity());
+}
+
+TEST(VectorTests, testEmpty) {
+  Vector<int> myVector;
+  EXPECT_EQ(true, myVector.empty());
+}
+
 // test assign function
 TEST(VectorTests, testAssign) {
   size_t elCount = 100;
