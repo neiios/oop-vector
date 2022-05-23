@@ -1,9 +1,9 @@
 #include <iostream>
+#include <vector>
 #include "Vector.hpp"
 
+using namespace std;
+
 int main(int argc, char const* argv[]) {
-  int input;
-  std::cout << "Please enter the number: ";
-  std::cin >> input;
   return 0;
 }
