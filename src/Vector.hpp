@@ -439,51 +439,41 @@ class Vector {
   void swap(Vector<T>& x, Vector<T>& y) { std::swap(x, y); }
 
  private:
-  iterator data;   // kaip buvo anksčiau
-  iterator avail;  // pirmasis po paskutiniojo sukonstruoto Vector elementas
-  iterator limit;  // pirmasis po paskutiniojo Vector elementas
-  // atminties išskyrimo valdymui
-  std::allocator<T> alloc;  // objektas atminties valdymui
-  // išskirti atmintį (array) ir ją inicializuoti
+  iterator data;
+  iterator avail;
+  iterator limit;
+  std::allocator<T> alloc;
+
   void create() { data = avail = limit = nullptr; }
   void create(size_type n, const T& val) {
-    data = alloc.allocate(n);  // grąžina ptr į array pirmą elementą
-    limit = avail = data + n;  // sustato rodykles į vietas
-    std::uninitialized_fill(data, limit,
-                            val);  // inicializuoja elementus val reikšme
+    data = alloc.allocate(n);
+    limit = avail = data + n;
+    std::uninitialized_fill(data, limit, val);
   }
   void create(const_iterator i, const_iterator j) {
-    data = alloc.allocate(j - i);  // išskirti vietos j-i elementams
-    limit = avail = std::uninitialized_copy(
-        i, j, data);  // nukopijuoja elementus iš intervalo
+    data = alloc.allocate(j - i);
+    limit = avail = std::uninitialized_copy(i, j, data);
   }
-  // sunaikinti elementus array ir atlaisvinti atmintį
+
   void uncreate() {
     if (data) {
-      // sunaikinti (atbuline tvarka) sukonstruotus elementus
       iterator it = avail;
       while (it != data)
         alloc.destroy(--it);
-      // atlaisvinti išskirtą atmintį. Turi būti data != nullptr
       alloc.deallocate(data, limit - data);
     }
-    // reset'inam pointer'iuss - Vector'ius tuščias
     data = limit = avail = nullptr;
   }
-  // pagalbinės funkcijos push_back realizacijai
+
   void grow() {
-    // dvigubai daugiau vietos, nei buvo
     size_type new_size = std::max(2 * (limit - data), ptrdiff_t(1));
-    // išskirti naują vietą ir perkopijuoti egzistuojančius elementus
     iterator new_data = alloc.allocate(new_size);
     iterator new_avail = std::uninitialized_copy(data, avail, new_data);
-    // atlaisvinti seną vietą
     uncreate();
-    // reset'int rodykles į naujai išskirtą vietą
     data = new_data;
     avail = new_avail;
     limit = data + new_size;
   }
-  // tariame, kad `avail` point'ina į išskirtą, bet neinicializuotą vietą
+
   void unchecked_append(const T& val) { alloc.construct(avail++, val); }
 };
