@@ -164,3 +164,23 @@ TEST(VectorTests, testSwap) {
   EXPECT_EQ(7, myVector2.size());
   EXPECT_EQ(42, myVector2.at(0));
 }
+
+TEST(VectorTests, testComparison) {
+  Vector<int> alice{1, 2, 3};
+  Vector<int> bob{7, 8, 9, 10};
+  Vector<int> eve{1, 2, 3};
+
+  EXPECT_EQ(false, (alice == bob));
+  EXPECT_EQ(true, (alice != bob));
+  EXPECT_EQ(true, (alice < bob));
+  EXPECT_EQ(true, (alice <= bob));
+  EXPECT_EQ(false, (alice > bob));
+  EXPECT_EQ(false, (alice >= bob));
+
+  EXPECT_EQ(true, (alice == eve));
+  EXPECT_EQ(false, (alice != eve));
+  EXPECT_EQ(false, (alice < eve));
+  EXPECT_EQ(true, (alice <= eve));
+  EXPECT_EQ(false, (alice > eve));
+  EXPECT_EQ(true, (alice >= eve));
+}

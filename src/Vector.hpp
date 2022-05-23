@@ -43,7 +43,21 @@ class Vector {
    *
    */
   ~Vector() { uncreate(); }
-
+  /**
+   * @brief Move constructor.
+   *
+   * @param vector
+   */
+  Vector(Vector&& vector) noexcept {
+    create(vector.begin(), vector.end());
+    vector.swap(*this);
+  }
+  /**
+   * @brief List initializer.
+   *
+   * @param il
+   */
+  Vector(const std::initializer_list<T>& il) { create(il.begin(), il.end()); }
   /**
    * @brief Copy assignment operator. Replaces the contents with a copy of the
    * contents of other.
@@ -157,7 +171,7 @@ class Vector {
     return const_reverse_iterator(end());
   }
   const_reverse_iterator crbegin() const { return rbegin(); }
-  // variations of begin
+  // variations of end
   iterator end() { return avail; }
   const_iterator end() const { return avail; }
   const_iterator cend() const { return end(); }
@@ -406,6 +420,23 @@ class Vector {
     std::swap(avail, other.avail);
     std::swap(limit, other.limit);
   }
+
+  // Non-member functions
+  // Comparison operators
+  bool operator==(const Vector<T>& rhs) const {
+    return size() == rhs.size() && std::equal(begin(), end(), rhs.begin());
+  }
+  bool operator!=(const Vector<T>& rhs) { return !(*this == rhs); }
+  bool operator<(const Vector<T>& rhs) {
+    return std::lexicographical_compare(begin(), end(), rhs.begin(), rhs.end());
+  }
+  bool operator>(const Vector<T>& rhs) {
+    return std::lexicographical_compare(rhs.begin(), rhs.end(), begin(), end());
+  }
+  bool operator>=(const Vector<T>& rhs) { return !(*this < rhs); }
+  bool operator<=(const Vector<T>& rhs) { return !(*this > rhs); }
+
+  void swap(Vector<T>& x, Vector<T>& y) { std::swap(x, y); }
 
  private:
   iterator data;   // kaip buvo anksčiau
